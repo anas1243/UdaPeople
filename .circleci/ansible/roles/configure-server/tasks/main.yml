@@ -1,0 +1,30 @@
+---
+- name: Add nodejs from node source.
+  become: true
+  shell: |
+    curl -fsSL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+
+- name: Install nodejs 13
+  become: true
+  apt:
+    name: ["nodejs"]
+    state: latest
+    update_cache: yes
+
+- name: install pm2
+  npm:
+    name: pm2
+    global: true
+# - name: Creates directory
+#   file:
+#     path: ~/web
+#     state: directory
+
+# - name: Copy index test page
+#   template:
+#     src: "files/index.js"
+#     dest: "~/web/index.js"
+
+# - name: Executing node
+#   shell: |
+#     pm2 start ~/web/index.js -f
