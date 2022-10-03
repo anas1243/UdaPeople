@@ -14,19 +14,23 @@ commands:
   install_aws_cli:
     description: Install aws CLI
     steps:
-      - run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install
+      - run:
+          name: Install aws CLI
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
 
   install_ansible:
     description: Install ansible
     steps:
-      - run: |
-          sudo apt update
-          sudo apt install software-properties-common
-          sudo add-apt-repository --yes --update ppa:ansible/ansible
-          sudo apt install ansible
+      - run:
+          name: Install ansible
+          command: |
+            sudo apt update
+            sudo apt install software-properties-common
+            sudo add-apt-repository --yes --update ppa:ansible/ansible
+            sudo apt install ansible
 
 # commands:
 # destroy-environment:
@@ -206,7 +210,9 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - .circleci/ansible/inventory.txt
+            - project/.circleci/ansible/inventory.txt
+
+      - notify_on_failure
       # Here's where you will add some code to rollback on failure
 
   #   configure-infrastructure:
@@ -378,3 +384,4 @@ workflows:
             - test-backend
             - scan-frontend
             - scan-backend
+            - deploy-infrastructure
