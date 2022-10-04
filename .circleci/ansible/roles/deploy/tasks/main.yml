@@ -1,0 +1,51 @@
+---
+- name: Creates backend directory
+  file:
+    path: ~/backend-app
+    state: directory
+
+- name: unarchive backend files
+  unarchive:
+    src: artifact.tar.gz
+    dest: ~/backend-app
+
+- name: install node deps
+  shell: |
+    cd ~/backend-app
+    npm i
+
+- name: execute our app with pm2
+  shell: |
+    cd ~/backend-app/dist
+    pm2 stop default
+    pm2 start main.js
+  register: execute_node
+
+- name: print message
+  debug: |
+    msg: "{{ execute_node.stdout_lines }}"
+
+- name: make pm2 start as server
+  become: true
+  shell: |
+    env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu
+
+# - name: Install nodejs 13
+#   become: true
+#   apt:
+#     name: ["nodejs"]
+#     state: latest
+#     update_cache: yes
+
+# - name: install pm2
+#   npm:
+#     name: pm2
+#     global: true
+# # - name: Copy index test page
+# #   template:
+# #     src: "files/index.js"
+# #     dest: "~/web/index.js"
+
+# # - name: Executing node
+# #   shell: |
+# #     pm2 start ~/web/index.js -f
