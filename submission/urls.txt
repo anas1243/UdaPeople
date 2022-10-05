@@ -1,0 +1,5 @@
+1. https://github.com/anas1243/UdaPeople-CI-CD
+2. http://udapeople-bcb9aed.s3-website-us-east-1.amazonaws.com
+3. http://dk4x2fti2kqmx.cloudfront.net/
+4. http://52.5.210.217:3030/api/status
+5. http://44.202.168.233:9090/targets

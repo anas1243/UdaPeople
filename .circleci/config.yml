@@ -389,7 +389,7 @@ jobs:
       - revert-migrations
       - notify_on_failure
 
-  cloudfront-update:
+  promote-production:
     docker:
       - image: cimg/base:stable
     steps:
@@ -483,10 +483,10 @@ workflows:
 
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
-      - cloudfront-update:
+      - promote-production:
           requires: [smoke-test]
       - cleanup:
-          requires: [cloudfront-update]
+          requires: [promote-production]
       - notify_on_success:
           requires:
             - test-frontend
@@ -499,5 +499,5 @@ workflows:
             - deploy-frontend
             - deploy-backend
             - smoke-test
-            - cloudfront-update
+            - promote-production
             - cleanup
